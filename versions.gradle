@@ -2,8 +2,9 @@
 
 ext.deps = [:]
 def versions = [:]
-versions.support = "28.0.0"
-versions.constraint_layout = "1.1.2"
+versions.support = "1.0.0"
+versions.lifecycle = "2.0.0"
+versions.constraint_layout = "2.0.0-alpha2"
 versions.kotlin = "1.2.71"
 versions.coroutine = "0.30.1"
 versions.android_gradle_plugin = "3.2.0"
@@ -17,9 +18,16 @@ build_versions.build_tools = "28.0.3"
 ext.build_versions = build_versions
 
 def support = [:]
-support.app_compat = "com.android.support:appcompat-v7:$versions.support"
-support.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
+support.app_compat = "androidx.appcompat:appcompat:$versions.support"
+support.constraint_layout = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
 deps.support = support
+
+def lifecycle = [:]
+lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle"
+lifecycle.extensions = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+lifecycle.compiler = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+deps.lifecycle = lifecycle
+
 
 def kotlin = [:]
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
