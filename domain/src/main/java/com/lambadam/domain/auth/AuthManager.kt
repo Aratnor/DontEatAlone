@@ -5,7 +5,7 @@ import com.lambadam.domain.model.Result
 import com.lambadam.domain.model.User
 
 
-interface AuthManger {
+interface   AuthManager {
 
     fun login(type: AuthType, token: String): Result<Exception, None>
 
