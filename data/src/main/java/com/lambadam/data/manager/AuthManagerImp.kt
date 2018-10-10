@@ -1,5 +1,6 @@
 package com.lambadam.data.manager
 
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.lambadam.domain.auth.AuthManager
@@ -12,7 +13,9 @@ class AuthManagerImp : AuthManager {
 
     private lateinit var mAuth: FirebaseAuth
 
+    private  var isSuccessful : Boolean = false
 
+    private var error : String = ""
 
     override fun getCurrentUser(): Result<Exception, User> {
 
@@ -49,7 +52,36 @@ class AuthManagerImp : AuthManager {
     }
 
     override fun login(type: AuthType, token: String): Result<Exception, None> {
+        return facebookLogin(token)
 
+    }
+
+
+
+
+    fun facebookLogin(token: String): Result<Exception,None> {
+
+        mAuth = FirebaseAuth.getInstance()
+
+
+        var credential = FacebookAuthProvider.getCredential(token)
+
+
+        mAuth.signInWithCredential(credential).addOnCompleteListener() { task ->
+            if(task.isSuccessful) {
+                //Sign in success
+                isSuccessful = task.isSuccessful
+            }
+            else {
+                error = task.exception.toString()
+            }
+        }
+        if(isSuccessful) {
+            return Result.buildValue { None() }
+        }
+        else {
+            return Result.buildError(Exception(error))
+        }
     }
 
 }
