@@ -8,6 +8,7 @@ versions.constraint_layout = "2.0.0-alpha2"
 versions.kotlin = "1.2.71"
 versions.coroutine = "0.30.1"
 versions.android_gradle_plugin = "3.2.0"
+versions.firebase = "16.0.4"
 
 def deps = [:]
 
@@ -35,6 +36,10 @@ kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 kotlin.coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutine"
 kotlin.coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutine"
 deps.kotlin = kotlin
+
+def firebase = [:]
+firebase.auth = "com.google.firebase:firebase-auth:$versions.firebase"
+deps.firebase = firebase
 
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps = deps

@@ -28,6 +28,5 @@ dependencies {
     implementation deps.kotlin.coroutines_core
     implementation deps.kotlin.coroutines_android
 
-    implementation 'com.facebook.android:facebook-android-sdk:4.37.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation deps.firebase.auth
 }
