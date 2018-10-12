@@ -37,3 +37,9 @@ dependencies {
     kapt deps.lifecycle.compiler
 
 }
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
