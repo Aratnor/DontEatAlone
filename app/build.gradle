@@ -25,6 +25,7 @@ android {
 dependencies {
 
     api project(':domain')
+    api project(':data')
 
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
