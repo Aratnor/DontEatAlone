@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Don\'t Eat Alone</string>
     <string name="something_went_wrong">Something went wrong</string>
+
+    <string name="facebook_app_id">252226905486121</string>
+    <string name="fb_login_protocol_scheme">fb252226905486121</string>
 </resources>

@@ -19,4 +19,8 @@
         <activity android:name=".login.LoginActivity"></activity>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <meta-data android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id"/>
 </manifest>
