@@ -1,9 +1,6 @@
 package com.lambadam.data.auth
 
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException
 import com.lambadam.domain.auth.AuthManager
 import com.lambadam.domain.auth.AuthType
@@ -20,16 +17,17 @@ class AuthManagerImp : AuthManager {
     private val auth = FirebaseAuth.getInstance()
 
     override fun getCurrentUser(): Result<Exception, User> {
-        return wrapIntoResult {
-            auth.currentUser?.let {
+        return auth.currentUser?.let {
+            Result.buildValue {
                 User(it.uid,
                         it.uid,
                         it.displayName.orEmpty(),
                         it.displayName.orEmpty(),
                         it.email.orEmpty(),
-                        it.photoUrl.toString())
-            } ?: throw FirebaseNoSignedInUserException("There is no signed in user")
-        }
+                        it.photoUrl.toString()
+                )
+            }
+        } ?: Result.buildError(FirebaseNoSignedInUserException("There is no signed in user"))
     }
 
     override fun logout(): Result<Exception, None> {
@@ -48,9 +46,28 @@ class AuthManagerImp : AuthManager {
     }
 
     private suspend fun loginWithCredential(credential: AuthCredential): Result<Exception, None> {
-        return wrapIntoResult {
-            auth.signInWithCredential(credential).await()
-            None()
-        }
+        val result= auth.signInWithCredential(credential).await()
+        return checkIsNewUser(result)
+    }
+
+    private fun checkIsNewUser(result: AuthResult?): Result<Exception, None> {
+        return result?.let{
+            if (!it.additionalUserInfo.isNewUser){
+            Result.buildValue { None() }
+            }else {
+                saveUser(it)
+            }
+        } ?: Result.buildError(IllegalArgumentException("AuthResult is null"))
+    }
+
+    private fun saveUser(result: AuthResult): Result<Nothing, None> {
+        val firebaseUser = result.user
+        val user = User(firebaseUser.uid,
+                firebaseUser.uid,
+                firebaseUser.displayName.orEmpty(),
+                firebaseUser.displayName.orEmpty(),
+                firebaseUser.email.orEmpty(),
+                firebaseUser.photoUrl.toString())
+        TODO("Waiting for the FireStore configuration")
     }
 }
