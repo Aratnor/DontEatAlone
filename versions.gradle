@@ -35,6 +35,7 @@ kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 kotlin.coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutine"
 kotlin.coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutine"
+kotlin.coroutines_play_services= "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$versions.coroutine"
 deps.kotlin = kotlin
 
 def firebase = [:]
