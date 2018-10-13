@@ -22,3 +22,11 @@ sealed class Result<out E, out V> {
         }
     }
 }
+
+inline fun <T> wrapIntoResult(fn: () -> T): Result<Exception,T> {
+    return try {
+        Result.buildValue { fn() }
+    } catch (e: Exception){
+        Result.buildError(e)
+    }
+}
