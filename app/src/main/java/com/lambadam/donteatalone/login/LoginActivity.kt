@@ -25,8 +25,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this
-                ,LoginViewModelFactory.getInstance()).get(LoginViewModel::class.java)
+        ViewModelProviders.of(this,
+                LoginViewModelFactory.getInstance(applicationContext))
+                .get(LoginViewModel::class.java)
     }
 
     private val facebookCallback by lazy{ CallbackManager.Factory.create() }

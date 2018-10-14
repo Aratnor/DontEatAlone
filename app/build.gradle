@@ -37,6 +37,8 @@ dependencies {
     implementation deps.lifecycle.extensions
     implementation deps.play_services
     implementation deps.facebook_sdk
+    implementation deps.firebase.core
+    implementation deps.firebase.auth
 
     kapt deps.lifecycle.compiler
 
