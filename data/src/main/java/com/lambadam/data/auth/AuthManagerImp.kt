@@ -14,9 +14,10 @@ import kotlinx.coroutines.experimental.tasks.await
 
 class AuthManagerImp : AuthManager {
 
-    private val auth = FirebaseAuth.getInstance()
+
 
     override fun getCurrentUser(): Result<Exception, User> {
+        val auth = FirebaseAuth.getInstance()
         return auth.currentUser?.let {
             Result.buildValue {
                 User(it.uid,
@@ -31,6 +32,7 @@ class AuthManagerImp : AuthManager {
     }
 
     override fun logout(): Result<Exception, None> {
+        val auth = FirebaseAuth.getInstance()
         return wrapIntoResult {
             auth.signOut()
             None()
@@ -46,6 +48,7 @@ class AuthManagerImp : AuthManager {
     }
 
     private suspend fun loginWithCredential(credential: AuthCredential): Result<Exception, None> {
+        val auth = FirebaseAuth.getInstance()
         val result= auth.signInWithCredential(credential).await()
         return checkIsNewUser(result)
     }
