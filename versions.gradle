@@ -45,6 +45,7 @@ deps.firebase = firebase
 
 def service = [:]
 service.play = "com.google.android.gms:play-services-auth:$versions.service"
+deps.service = service
 
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps = deps
