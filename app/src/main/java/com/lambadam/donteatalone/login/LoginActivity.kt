@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
         var TAG = "Facebook Login"
         val mCallbackManager : CallbackManager
 
+
         val login_button = findViewById<LoginButton>(R.id.login_button);
 
         viewModel.login.observe(this, Observer { navigateToPostActivity() })
