@@ -8,8 +8,11 @@ versions.constraint_layout = "2.0.0-alpha2"
 versions.kotlin = "1.2.71"
 versions.coroutine = "0.30.1"
 versions.android_gradle_plugin = "3.2.0"
+versions.google_services_plugin = "4.0.1"
 versions.firebase = "16.0.4"
-versions.service = "16.0.1"
+versions.play_services = "16.0.1"
+versions.facebook_sdk = "4.37.0"
+
 
 def deps = [:]
 
@@ -43,9 +46,8 @@ def firebase = [:]
 firebase.auth = "com.google.firebase:firebase-auth:$versions.firebase"
 deps.firebase = firebase
 
-def service = [:]
-service.play = "com.google.android.gms:play-services-auth:$versions.service"
-deps.service = service
-
+deps.facebook_sdk = "com.facebook.android:facebook-android-sdk:$versions.facebook_sdk"
+deps.play_services = "com.google.android.gms:play-services-auth:$versions.play_services"
+deps.google_services_plugin = "com.google.gms:google-services:$versions.google_services_plugin"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps = deps
