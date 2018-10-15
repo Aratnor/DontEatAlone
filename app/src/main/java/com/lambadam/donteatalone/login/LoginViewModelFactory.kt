@@ -1,5 +1,6 @@
 package com.lambadam.donteatalone.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.lambadam.domain.auth.Login
@@ -22,10 +23,10 @@ class LoginViewModelFactory(private val login: Login,
 
         private var INSTANCE: LoginViewModelFactory? = null
 
-        fun getInstance(): LoginViewModelFactory{
+        fun getInstance(context: Context): LoginViewModelFactory{
             return INSTANCE ?: synchronized(this){
                 INSTANCE ?: LoginViewModelFactory(
-                        Injection.provideLogin(),
+                        Injection.provideLogin(context),
                         Injection.dispatcherProvider)
                         .also { INSTANCE = it }
             }

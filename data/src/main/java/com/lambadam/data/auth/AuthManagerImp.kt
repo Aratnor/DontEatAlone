@@ -12,12 +12,9 @@ import com.lambadam.domain.model.User
 import com.lambadam.domain.model.wrapIntoResult
 import kotlinx.coroutines.experimental.tasks.await
 
-class AuthManagerImp : AuthManager {
-
-
+class AuthManagerImp(private val auth: FirebaseAuth) : AuthManager {
 
     override fun getCurrentUser(): Result<Exception, User> {
-        val auth = FirebaseAuth.getInstance()
         return auth.currentUser?.let {
             Result.buildValue {
                 User(it.uid,
@@ -32,7 +29,6 @@ class AuthManagerImp : AuthManager {
     }
 
     override fun logout(): Result<Exception, None> {
-        val auth = FirebaseAuth.getInstance()
         return wrapIntoResult {
             auth.signOut()
             None()
@@ -48,7 +44,6 @@ class AuthManagerImp : AuthManager {
     }
 
     private suspend fun loginWithCredential(credential: AuthCredential): Result<Exception, None> {
-        val auth = FirebaseAuth.getInstance()
         val result= auth.signInWithCredential(credential).await()
         return checkIsNewUser(result)
     }
@@ -72,5 +67,16 @@ class AuthManagerImp : AuthManager {
                 firebaseUser.email.orEmpty(),
                 firebaseUser.photoUrl.toString())
         TODO("Waiting for the FireStore configuration")
+    }
+
+    companion object {
+        @Volatile private var INSTANCE: AuthManagerImp? = null
+
+        fun getInstance(auth: FirebaseAuth): AuthManagerImp{
+            return INSTANCE ?: synchronized(this){
+                INSTANCE ?: AuthManagerImp(auth)
+                        .also { INSTANCE = it }
+            }
+        }
     }
 }
