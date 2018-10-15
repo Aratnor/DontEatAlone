@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion build_versions.target_sdk
@@ -25,6 +26,7 @@ android {
 dependencies {
 
     api project(':domain')
+    api project(':data')
 
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
@@ -33,7 +35,17 @@ dependencies {
     implementation deps.kotlin.coroutines_android
     implementation deps.lifecycle.runtime
     implementation deps.lifecycle.extensions
+    implementation deps.play_services
+    implementation deps.facebook_sdk
+    implementation deps.firebase.core
+    implementation deps.firebase.auth
 
     kapt deps.lifecycle.compiler
 
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
