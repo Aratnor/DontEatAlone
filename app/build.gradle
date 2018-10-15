@@ -39,6 +39,7 @@ dependencies {
     implementation deps.facebook_sdk
     implementation deps.firebase.core
     implementation deps.firebase.auth
+    implementation deps.firebase.firestore
 
     kapt deps.lifecycle.compiler
 
