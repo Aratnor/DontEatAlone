@@ -7,7 +7,7 @@ import com.lambadam.domain.model.Result
 
 class Logout(private val manager: AuthManager,
              dispatcherProvider: CoroutineDispatcherProvider)
-    : UseCase<None, Nothing>(dispatcherProvider) {
+    : UseCase<None, None>(dispatcherProvider) {
 
-    override suspend fun buildUseCase(params: Nothing?): Result<Exception, None> = manager.logout()
+    override suspend fun buildUseCase(params: None) = manager.logout()
 }
