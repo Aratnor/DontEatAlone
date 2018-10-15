@@ -65,27 +65,17 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
     }
 
     private fun saveUser(result: AuthResult): Result<Exception, None> {
-        lateinit var resultValue : Result<Exception,None>
+
         val firebaseUser = result.user
         val user = User(firebaseUser.uid,
                 firebaseUser.uid,
                 firebaseUser.displayName.orEmpty(),
                 firebaseUser.email.orEmpty(),
                 firebaseUser.photoUrl.toString())
-        val userMap = HashMap<String,Any>();
-        userMap.put("uid",user.id)
-        userMap.put("displayName",user.displayName)
-        userMap.put("email",user.email)
-        userMap.put("photoUrl",user.profileUrl)
-            db.collection("users").add(userMap).addOnSuccessListener {
-                Log.i("Firebase", "User upload successful")
-                resultValue = Result.buildValue { None() }
-
-            }.addOnFailureListener {
-                Log.i("Firebase","User upload unsuccessful " +it.message)
-                resultValue = Result.buildError(it)
-            }
-        return resultValue
+        return wrapIntoResult {
+            db.collection("users").add(user)
+            None()
+        }
     }
 
     companion object {
