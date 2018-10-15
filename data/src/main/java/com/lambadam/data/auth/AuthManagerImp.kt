@@ -64,7 +64,8 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
         } ?: Result.buildError(IllegalArgumentException("AuthResult is null"))
     }
 
-    private fun saveUser(result: AuthResult): Result<Nothing, None> {
+    private fun saveUser(result: AuthResult): Result<Exception, None> {
+        lateinit var resultValue : Result<Exception,None>
         val firebaseUser = result.user
         val user = User(firebaseUser.uid,
                 firebaseUser.uid,
@@ -78,18 +79,21 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
         userMap.put("photoUrl",user.profileUrl)
             db.collection("users").add(userMap).addOnSuccessListener {
                 Log.i("Firebase", "User upload successful")
+                resultValue = Result.buildValue { None() }
 
             }.addOnFailureListener {
                 Log.i("Firebase","User upload unsuccessful " +it.message)
+                resultValue = Result.buildError(it)
             }
+        return resultValue
     }
 
     companion object {
         @Volatile private var INSTANCE: AuthManagerImp? = null
 
-        fun getInstance(auth: FirebaseAuth): AuthManagerImp{
+        fun getInstance(auth: FirebaseAuth,db: FirebaseFirestore): AuthManagerImp{
             return INSTANCE ?: synchronized(this){
-                INSTANCE ?: AuthManagerImp(auth)
+                INSTANCE ?: AuthManagerImp(auth,db)
                         .also { INSTANCE = it }
             }
         }
