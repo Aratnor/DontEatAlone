@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initializeFacebookButton(){
+        login_button.setReadPermissions("email", "public_profile")
         login_button.registerCallback(facebookCallback, object: FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 login(AuthType.FACEBOOK,loginResult.accessToken.token)
