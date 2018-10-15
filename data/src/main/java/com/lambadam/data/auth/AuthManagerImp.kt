@@ -73,7 +73,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
                 firebaseUser.email.orEmpty(),
                 firebaseUser.photoUrl.toString())
         return wrapIntoResult {
-            db.collection("users").add(user).await()
+            db.collection("users").document(user.id).set(user).await()
             None()
         }
     }
