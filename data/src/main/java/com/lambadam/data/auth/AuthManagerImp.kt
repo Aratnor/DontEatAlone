@@ -54,7 +54,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
         }
     }
 
-    private fun checkIsNewUser(result: AuthResult?): Result<Exception, None> {
+    private suspend fun checkIsNewUser(result: AuthResult?): Result<Exception, None> {
         return result?.let{
             if (!it.additionalUserInfo.isNewUser){
             Result.buildValue { None() }
@@ -64,7 +64,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
         } ?: Result.buildError(IllegalArgumentException("AuthResult is null"))
     }
 
-    private fun saveUser(result: AuthResult): Result<Exception, None> {
+    private suspend fun saveUser(result: AuthResult): Result<Exception, None> {
 
         val firebaseUser = result.user
         val user = User(firebaseUser.uid,
@@ -73,7 +73,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
                 firebaseUser.email.orEmpty(),
                 firebaseUser.photoUrl.toString())
         return wrapIntoResult {
-            db.collection("users").add(user)
+            db.collection("users").add(user).await()
             None()
         }
     }
