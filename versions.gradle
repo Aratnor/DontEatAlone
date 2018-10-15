@@ -10,9 +10,9 @@ versions.coroutine = "0.30.1"
 versions.android_gradle_plugin = "3.2.0"
 versions.google_services_plugin = "4.0.1"
 versions.firebase_core = "16.0.4"
+versions.firestore = "17.1.1"
 versions.play_services = "16.0.1"
 versions.facebook_sdk = "4.37.0"
-
 
 def deps = [:]
 
@@ -45,6 +45,7 @@ deps.kotlin = kotlin
 def firebase = [:]
 firebase.auth = "com.google.firebase:firebase-auth:$versions.firebase_core"
 firebase.core = "com.google.firebase:firebase-core:$versions.firebase_core"
+firebase.firestore = "com.google.firebase:firebase-firestore:$versions.firestore"
 deps.firebase = firebase
 
 deps.facebook_sdk = "com.facebook.android:facebook-android-sdk:$versions.facebook_sdk"
