@@ -7,25 +7,25 @@ import com.lambadam.domain.executor.CoroutineDispatcherProvider
 import com.lambadam.domain.user.GetUser
 import com.lambadam.donteatalone.Injection
 
-class UserProfileModelFactory(private val getUser: GetUser,
-                              private val dispatcherProvider: CoroutineDispatcherProvider)
+class UserProfileViewModelFactory(private val getUser: GetUser,
+                                  private val dispatcherProvider: CoroutineDispatcherProvider)
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(!modelClass.isAssignableFrom(UserProfileModel::class.java)) {
+        if(!modelClass.isAssignableFrom(UserProfileViewModel::class.java)) {
             throw IllegalArgumentException("Model class must be TasksViewModel")
         }
         @Suppress("UNCHECKED_CAST")
-        return UserProfileModel(getUser,dispatcherProvider)as T
+        return UserProfileViewModel(getUser,dispatcherProvider)as T
     }
     companion object {
-        private var INSTANCE: UserProfileModelFactory? = null
+        private var INSTANCE: UserProfileViewModelFactory? = null
 
-        fun getInstance(context: Context): UserProfileModelFactory {
-            return UserProfileModelFactory.INSTANCE ?: synchronized(this){
-                UserProfileModelFactory.INSTANCE ?: UserProfileModelFactory(
+        fun getInstance(context: Context): UserProfileViewModelFactory {
+            return UserProfileViewModelFactory.INSTANCE ?: synchronized(this){
+                UserProfileViewModelFactory.INSTANCE ?: UserProfileViewModelFactory(
                         Injection.provideGetUser(context),
                         Injection.dispatcherProvider)
-                        .also { UserProfileModelFactory.INSTANCE = it }
+                        .also { UserProfileViewModelFactory.INSTANCE = it }
             }
 
         }
