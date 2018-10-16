@@ -16,7 +16,7 @@ object Injection {
 
     fun provideLogin(context: Context) = Login(provideAuthManager(context), dispatcherProvider)
 
-    fun provideGetUser(context: Context)  = GetUser()
+    fun provideGetUser(context: Context)  = GetUser(provideUserRepository(context), dispatcherProvider)
 
     private fun provideAuthManager(context: Context): AuthManagerImp{
         FirebaseApp.initializeApp(context)
