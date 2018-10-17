@@ -1,9 +1,9 @@
 package com.lambadam.data.auth
 
-import android.util.Log
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException
+import com.lambadam.data.entity.UserEntity
 import com.lambadam.domain.auth.AuthManager
 import com.lambadam.domain.auth.AuthType
 import com.lambadam.domain.auth.AuthType.FACEBOOK
@@ -13,9 +13,9 @@ import com.lambadam.domain.model.Result
 import com.lambadam.domain.model.User
 import com.lambadam.domain.model.wrapIntoResult
 import kotlinx.coroutines.experimental.tasks.await
-import java.util.*
 
-class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFirestore) : AuthManager {
+class AuthManagerImp(private val auth: FirebaseAuth,
+                     private val db: FirebaseFirestore) : AuthManager {
 
     override fun getCurrentUser(): Result<Exception, User> {
         return auth.currentUser?.let {
@@ -67,13 +67,13 @@ class AuthManagerImp(private val auth: FirebaseAuth,private val db: FirebaseFire
     private suspend fun saveUser(result: AuthResult): Result<Exception, None> {
 
         val firebaseUser = result.user
-        val user = User(firebaseUser.uid,
+        val userEntity = UserEntity(firebaseUser.uid,
                 firebaseUser.uid,
                 firebaseUser.displayName.orEmpty(),
                 firebaseUser.email.orEmpty(),
                 firebaseUser.photoUrl.toString())
         return wrapIntoResult {
-            db.collection("users").document(user.id).set(user).await()
+            db.collection("users").document(userEntity.id).set(userEntity).await()
             None()
         }
     }
