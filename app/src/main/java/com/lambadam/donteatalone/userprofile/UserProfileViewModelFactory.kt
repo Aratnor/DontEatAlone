@@ -1,4 +1,4 @@
-package com.lambadam.donteatalone.user_profile
+package com.lambadam.donteatalone.userprofile
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,7 @@ class UserProfileViewModelFactory(private val getUser: GetUser,
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(!modelClass.isAssignableFrom(UserProfileViewModel::class.java)) {
-            throw IllegalArgumentException("Model class must be TasksViewModel")
+            throw IllegalArgumentException("Model class must be UserProfileViewModel")
         }
         @Suppress("UNCHECKED_CAST")
         return UserProfileViewModel(getUser,dispatcherProvider)as T
