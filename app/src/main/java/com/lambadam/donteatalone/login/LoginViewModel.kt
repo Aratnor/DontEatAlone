@@ -10,20 +10,20 @@ import com.lambadam.domain.model.None
 import com.lambadam.donteatalone.base.BaseViewModel
 import kotlinx.coroutines.experimental.launch
 
-class LoginViewModel(private val loginUseCase: Login,
-        dispatcher: CoroutineDispatcherProvider): BaseViewModel(dispatcher) {
+class LoginViewModel(private val login: Login,
+                     dispatcher: CoroutineDispatcherProvider): BaseViewModel(dispatcher) {
 
-    private val _login = MutableLiveData<None>()
+    private val _loginSuccess = MutableLiveData<None>()
 
-    val login: LiveData<None>
-    get() = _login
+    val loginSuccess: LiveData<None>
+    get() = _loginSuccess
 
     fun login(type: AuthType, token: String) = launch {
 
-        loginUseCase.execute(Params(type,token)) { it.result({handleFailure()},::loginSuccess)  }
+        login.execute(Params(type,token)) { it.result({handleFailure()},::loginSuccess)  }
     }
 
     private fun loginSuccess(none: None){
-        _login.value = none
+        _loginSuccess.value = none
     }
 }
