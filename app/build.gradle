@@ -41,7 +41,9 @@ dependencies {
     implementation deps.firebase.core
     implementation deps.firebase.auth
     implementation deps.firebase.firestore
+    implementation deps.glide.runtime
 
+    kapt deps.glide.compiler
     kapt deps.lifecycle.compiler
 }
 
