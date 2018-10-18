@@ -1,11 +1,43 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.DontEatAlone" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    </style>
+
+    <style name="Widget.DontEatAlone.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">@style/Theme.DontEatAlone</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="titleTextAppearance">@style/TextAppearance.DontEatAlone.Toolbar</item>
+    </style>
+
+    <style name="TextAppearance.DontEatAlone.Toolbar" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.DontEatAlone.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="backgroundTint">?attr/colorAccent</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.DontEatAlone.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.DontEatAlone.Button.StrokeTextButton" parent="Widget.DontEatAlone.Button.TextButton">
+        <item name="android:textColor">?android:attr/colorAccent</item>
+        <item name="strokeWidth">@dimen/textButtonStroke</item>
+        <item name="strokeColor">?android:attr/colorAccent</item>
+        <item name="cornerRadius">@dimen/textButtonRadius</item>
     </style>
 
 </resources>
