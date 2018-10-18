@@ -4,4 +4,5 @@
 
     <string name="facebook_app_id">252226905486121</string>
     <string name="fb_login_protocol_scheme">fb252226905486121</string>
+    <string name="message">Message</string>
 </resources>
