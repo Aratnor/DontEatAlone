@@ -8,7 +8,6 @@ import com.lambadam.domain.auth.AuthManager
 import com.lambadam.domain.auth.AuthType
 import com.lambadam.domain.auth.AuthType.FACEBOOK
 import com.lambadam.domain.auth.AuthType.GOOGLE
-import com.lambadam.domain.model.None
 import com.lambadam.domain.model.Result
 import com.lambadam.domain.model.User
 import com.lambadam.domain.model.wrapIntoResult
@@ -30,14 +29,13 @@ class AuthManagerImp(private val auth: FirebaseAuth,
         } ?: Result.buildError(FirebaseNoSignedInUserException("There is no signed in user"))
     }
 
-    override fun logout(): Result<Exception, None> {
+    override fun logout(): Result<Exception, Unit> {
         return wrapIntoResult {
             auth.signOut()
-            None()
         }
     }
 
-    override suspend fun login(type: AuthType, token: String): Result<Exception, None> {
+    override suspend fun login(type: AuthType, token: String): Result<Exception, Unit> {
         val credential = when(type){
             FACEBOOK -> FacebookAuthProvider.getCredential(token)
             GOOGLE -> GoogleAuthProvider.getCredential(token, null)
@@ -45,7 +43,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,
         return loginWithCredential(credential)
     }
 
-    private suspend fun loginWithCredential(credential: AuthCredential): Result<Exception, None> {
+    private suspend fun loginWithCredential(credential: AuthCredential): Result<Exception, Unit> {
         return try {
             val result = auth.signInWithCredential(credential).await()
             checkIsNewUser(result)
@@ -54,17 +52,17 @@ class AuthManagerImp(private val auth: FirebaseAuth,
         }
     }
 
-    private suspend fun checkIsNewUser(result: AuthResult?): Result<Exception, None> {
+    private suspend fun checkIsNewUser(result: AuthResult?): Result<Exception, Unit> {
         return result?.let{
             if (!it.additionalUserInfo.isNewUser){
-            Result.buildValue { None() }
+                Result.buildValue { }
             }else {
                 saveUser(it)
             }
         } ?: Result.buildError(IllegalArgumentException("AuthResult is null"))
     }
 
-    private suspend fun saveUser(result: AuthResult): Result<Exception, None> {
+    private suspend fun saveUser(result: AuthResult): Result<Exception, Unit> {
 
         val firebaseUser = result.user
         val userEntity = UserEntity(firebaseUser.uid,
@@ -74,7 +72,7 @@ class AuthManagerImp(private val auth: FirebaseAuth,
                 firebaseUser.photoUrl.toString())
         return wrapIntoResult {
             db.collection("users").document(userEntity.id).set(userEntity).await()
-            None()
+            Unit
         }
     }
 
