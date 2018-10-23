@@ -14,8 +14,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.lambadam.data.exception.AuthError
 import com.lambadam.domain.auth.AuthType
 import com.lambadam.domain.auth.AuthType.GOOGLE
+import com.lambadam.domain.exception.Error
+import com.lambadam.domain.exception.Error.Unknown
 import com.lambadam.donteatalone.R
 import com.lambadam.donteatalone.post.PostActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -76,11 +79,20 @@ class LoginActivity : AppCompatActivity() {
 
     private fun viewModelLoginObserver() {
         viewModel.loginSuccess.observe(this, Observer{ navigateToPostActivity()})
-        viewModel.failure.observe(this,Observer{ notify(it)})
+        viewModel.failure.observe(this,Observer{ handleFailure(it)})
     }
 
     private fun navigateToPostActivity() {
         startActivity(Intent(this, PostActivity::class.java))
+    }
+
+    private fun handleFailure(error: Error) {
+        when(error){
+            AuthError.NoSignedInUser -> notify(R.string.no_signed_user)
+            AuthError.DuplicatedEmail -> notify(R.string.duplicated_email)
+            AuthError.DisabledAccount -> notify(R.string.disabled_account)
+            Unknown -> notify(R.string.something_went_wrong)
+        }
     }
 
     private fun notify(messageId: Int?) {

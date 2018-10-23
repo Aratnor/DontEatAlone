@@ -18,7 +18,7 @@ class UserProfileViewModel(private val getUser: GetUser,
         get() = _user
 
     fun loadUser(userId: String) = launch {
-        getUser.execute(Params(userId)) { result({handleFailure()},::loadUserSuccess)}
+        getUser.execute(Params(userId)) { result(::handleFailure, ::loadUserSuccess)}
     }
 
     private fun loadUserSuccess(user: User) {

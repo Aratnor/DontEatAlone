@@ -19,7 +19,7 @@ class LoginViewModel(private val login: Login,
 
     fun login(type: AuthType, token: String) = launch {
 
-        login.execute(Params(type,token)) { result({handleFailure()}, ::loginSuccess)  }
+        login.execute(Params(type,token)) { result(::handleFailure, ::loginSuccess)  }
     }
 
     private fun loginSuccess(u: Unit){

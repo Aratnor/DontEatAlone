@@ -1,6 +1,8 @@
 package com.lambadam.donteatalone.userprofile
 
 import android.os.Bundle
+import com.lambadam.data.exception.FirestoreError
+import com.lambadam.domain.exception.Error
 import com.lambadam.domain.model.User
 import com.lambadam.donteatalone.R
 import com.lambadam.donteatalone.base.BaseFragment
@@ -21,7 +23,7 @@ class UserProfileFragment : BaseFragment() {
 
         viewModel = viewModel(UserProfileViewModelFactory.getInstance(appContext)) {
             observe(user, ::showUser)
-            observe(failure) { notify(root, R.string.something_went_wrong) }
+            observe(failure, ::handleFailure)
         }
 
         viewModel.loadUser(arguments?.getString(USER_PROFILE_BUNDLE).orEmpty())
@@ -31,6 +33,13 @@ class UserProfileFragment : BaseFragment() {
         user?.run {
             text_name.text = displayName
             profile_image.loadFromUrl(appContext, profileUrl)
+        }
+    }
+
+    private fun handleFailure(error: Error){
+        when(error){
+            is FirestoreError.NotFound -> notify(root, R.string.not_found)
+            is FirestoreError.Unavailable, Error.Unknown  -> notify(root, R.string.something_went_wrong)
         }
     }
 
