@@ -1,13 +1,15 @@
 package com.lambadam.domain.model
 
+import com.lambadam.domain.exception.Error
+
 sealed class Result<out E, out V> {
 
     data class Value<out V>(val value: V) : Result<Nothing, V>()
-    data class Error<out E>(val error: E) : Result<E, Nothing>()
+    data class Failure<out E>(val failure: E) : Result<E, Nothing>()
 
     fun result(fnE: (E) -> Any, fnV: (V) -> Any): Any{
         return when(this){
-            is Error -> fnE(error)
+            is Failure -> fnE(failure)
             is Value -> fnV(value)
         }
     }
@@ -17,16 +19,16 @@ sealed class Result<out E, out V> {
             return Value(function())
         }
 
-        fun buildError(error: Exception): Result<Exception, Nothing> {
-            return Error(error)
+        fun buildError(error: Error): Result<Error, Nothing> {
+            return Failure(error)
         }
     }
 }
 
-inline fun <T> wrapIntoResult(fn: () -> T): Result<Exception,T> {
+inline fun <T> wrapIntoResult(fn: () -> T): Result<Error,T> {
     return try {
         Result.buildValue { fn() }
     } catch (e: Exception){
-        Result.buildError(e)
+        Result.buildError(Error.Unknown)
     }
 }

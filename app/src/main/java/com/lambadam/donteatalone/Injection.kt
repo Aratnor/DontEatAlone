@@ -5,6 +5,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.lambadam.data.auth.AuthManagerImp
+import com.lambadam.data.common.helper.AuthHelper
+import com.lambadam.data.common.helper.FirestoreHelper
 import com.lambadam.data.mapper.UserEntityMapper
 import com.lambadam.data.user.UserRepositoryImp
 import com.lambadam.domain.auth.Login
@@ -14,6 +16,9 @@ import com.lambadam.donteatalone.executor.CoroutineDispatcherProviderImp
 object Injection {
     val dispatcherProvider = CoroutineDispatcherProviderImp()
     private val userEntityMapper = UserEntityMapper()
+    private val firestoreHelper = FirestoreHelper()
+    private val authHelper = AuthHelper()
+
 
     fun provideLogin(context: Context) = Login(provideAuthManager(context), dispatcherProvider)
 
@@ -21,11 +26,18 @@ object Injection {
 
     private fun provideAuthManager(context: Context): AuthManagerImp{
         FirebaseApp.initializeApp(context)
-        return AuthManagerImp.getInstance(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
+        return AuthManagerImp.getInstance(FirebaseAuth.getInstance(),
+                FirebaseFirestore.getInstance(),
+                authHelper,
+                firestoreHelper,
+                dispatcherProvider)
     }
 
     private fun provideUserRepository(context: Context): UserRepositoryImp {
         FirebaseApp.initializeApp(context)
-        return UserRepositoryImp.getInstance(FirebaseFirestore.getInstance(), userEntityMapper)
+        return UserRepositoryImp.getInstance(FirebaseFirestore.getInstance(),
+                userEntityMapper,
+                firestoreHelper,
+                dispatcherProvider)
     }
 }
