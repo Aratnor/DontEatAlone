@@ -1,15 +1,15 @@
 package com.lambadam.domain.auth
 
-import com.lambadam.domain.model.None
+import com.lambadam.domain.exception.Error
 import com.lambadam.domain.model.Result
 import com.lambadam.domain.model.User
 
 
 interface AuthManager {
 
-    suspend fun login(type: AuthType, token: String): Result<Exception, None>
+    suspend fun login(type: AuthType, token: String): Result<Error, Unit>
 
-    fun getCurrentUser(): Result<Exception, User>
+    fun getCurrentUser(): Result<Error, User>
 
-    fun logout(): Result<Exception, None>
+    fun logout(): Result<Error, Unit>
 }

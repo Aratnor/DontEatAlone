@@ -13,7 +13,7 @@ class LoginViewModelFactory(private val login: Login,
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (!modelClass.isAssignableFrom(LoginViewModel::class.java))
-            throw IllegalArgumentException("Model class must be TasksViewModel")
+            throw IllegalArgumentException("Model class must be LoginViewModel")
 
         @Suppress("UNCHECKED_CAST")
         return LoginViewModel(login,dispatcherProvider) as T

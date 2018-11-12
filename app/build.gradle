@@ -29,8 +29,9 @@ dependencies {
     api project(':data')
 
     implementation deps.kotlin.stdlib
-    implementation deps.support.app_compat
-    implementation deps.support.constraint_layout
+    implementation deps.androidx.app_compat
+    implementation deps.androidx.constraint_layout
+    implementation deps.androidx.material
     implementation deps.kotlin.coroutines_core
     implementation deps.kotlin.coroutines_android
     implementation deps.lifecycle.runtime
@@ -39,9 +40,11 @@ dependencies {
     implementation deps.facebook_sdk
     implementation deps.firebase.core
     implementation deps.firebase.auth
+    implementation deps.firebase.firestore
+    implementation deps.glide.runtime
 
+    kapt deps.glide.compiler
     kapt deps.lifecycle.compiler
-
 }
 
 kotlin {

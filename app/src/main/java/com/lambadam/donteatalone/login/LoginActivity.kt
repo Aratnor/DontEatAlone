@@ -3,7 +3,6 @@ package com.lambadam.donteatalone.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,9 +13,12 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Status
+import com.google.android.material.snackbar.Snackbar
+import com.lambadam.data.exception.AuthError
 import com.lambadam.domain.auth.AuthType
 import com.lambadam.domain.auth.AuthType.GOOGLE
+import com.lambadam.domain.exception.Error
+import com.lambadam.domain.exception.Error.Unknown
 import com.lambadam.donteatalone.R
 import com.lambadam.donteatalone.post.PostActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -76,17 +78,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun viewModelLoginObserver() {
-        viewModel.login.observe(this, Observer{ navigateToPostActivity()})
-        viewModel.failure.observe(this,Observer{ toast(it)})
+        viewModel.loginSuccess.observe(this, Observer{ navigateToPostActivity()})
+        viewModel.failure.observe(this,Observer{ handleFailure(it)})
     }
 
     private fun navigateToPostActivity() {
         startActivity(Intent(this, PostActivity::class.java))
     }
 
-    private fun toast(messageId: Int?) {
+    private fun handleFailure(error: Error) {
+        when(error){
+            AuthError.NoSignedInUser -> notify(R.string.no_signed_user)
+            AuthError.DuplicatedEmail -> notify(R.string.duplicated_email)
+            AuthError.DisabledAccount -> notify(R.string.disabled_account)
+            Unknown -> notify(R.string.something_went_wrong)
+        }
+    }
+
+    private fun notify(messageId: Int?) {
         messageId?.let {
-            Toast.makeText(this, getString(it), Toast.LENGTH_SHORT).show()
+            Snackbar.make(root, getString(it), Snackbar.LENGTH_SHORT).show()
         }
     }
 

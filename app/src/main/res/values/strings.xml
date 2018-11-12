@@ -4,4 +4,9 @@
 
     <string name="facebook_app_id">252226905486121</string>
     <string name="fb_login_protocol_scheme">fb252226905486121</string>
+    <string name="message">Message</string>
+    <string name="not_found">Query not found!</string>
+    <string name="no_signed_user">No signed in user</string>
+    <string name="duplicated_email">You have an account with another provider please sign in with it</string>
+    <string name="disabled_account">Account is disabled</string>
 </resources>

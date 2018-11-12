@@ -2,12 +2,11 @@ package com.lambadam.domain.auth
 
 import com.lambadam.domain.executor.CoroutineDispatcherProvider
 import com.lambadam.domain.interactor.UseCase
-import com.lambadam.domain.model.None
-import com.lambadam.domain.model.Result
+import com.lambadam.domain.interactor.UseCase.None
 
 class Logout(private val manager: AuthManager,
              dispatcherProvider: CoroutineDispatcherProvider)
-    : UseCase<None, Nothing>(dispatcherProvider) {
+    : UseCase<Unit, None>(dispatcherProvider) {
 
-    override suspend fun buildUseCase(params: Nothing?): Result<Exception, None> = manager.logout()
+    override suspend fun buildUseCase(params: None) = manager.logout()
 }
